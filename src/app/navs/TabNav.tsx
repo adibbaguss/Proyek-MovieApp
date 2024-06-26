@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SearchScreen from "../screens/Search";
 import FavoriteScreen from "../screens/Favorite";
 import HomeStackNav from "./HomeStackNav";
+import SearchStackNav from "./SearchStackNav";
 export default function TabNav() {
   const Tab = createBottomTabNavigator();
   return (
@@ -19,7 +20,7 @@ export default function TabNav() {
       />
       <Tab.Screen
         name="Search"
-        component={SearchScreen}
+        component={SearchStackNav}
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="search" size={28} color={color} />
