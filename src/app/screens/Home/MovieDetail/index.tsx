@@ -92,7 +92,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
     <View>
       <Text>MovieDetail</Text>
 
-      {/* button favorite */}
+      {/* button for favorite */}
       <TouchableOpacity onPress={isFavorite ? () => removeFavorite(movie.id) : () => addFavorite(movie)}>
         <FontAwesome name={isFavorite ? 'heart' : 'heart-o'} size={30} color="#ff0000" />
       </TouchableOpacity>
