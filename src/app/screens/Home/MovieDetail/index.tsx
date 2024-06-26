@@ -5,10 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 // untuk menggunakan package Async Storage
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// !!! file belum dibuat !!!
-import type { Movie } from '../../types/app';
+import type { Movie } from '../../../types/app';
 
 const MovieDetail = ({ route }: any): JSX.Element => {
+  const [movie, setMovie] = useState<any>(null);
   // mendefinisiakn isFavorite adn setIsFavorite sebagai state
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const { id } = route.params;
@@ -90,7 +90,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
 
   return (
     <View>
-      <Text>MovieDetail</Text>
+      <Text>MovieDetail test</Text>
 
       {/* button for favorite */}
       <TouchableOpacity onPress={isFavorite ? () => removeFavorite(movie.id) : () => addFavorite(movie)}>
