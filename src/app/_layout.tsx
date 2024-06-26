@@ -9,7 +9,7 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { SplashScreen } from "expo-router";
 import { useEffect } from "react";
-import App from "./index";
+import TabNav from "./navs/TabNav";
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
@@ -30,7 +30,7 @@ export default function RootLayout() {
 
   return (
     <NavigationContainer independent={true}>
-      <App />
+      <TabNav />
     </NavigationContainer>
   );
 }
