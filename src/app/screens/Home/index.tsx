@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { Button, StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { getMovieCategory } from "services/movie";
 
 type PropsHomeScreen = {
   navigation: any;
@@ -10,19 +10,19 @@ const HomeScreen = ({ navigation }: PropsHomeScreen) => {
   const [result, setResult] = useState();
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  const fetchData = () => {
-    axios
-      .get(`https://api.themoviedb.org/3/movie/popular`, {
-        headers: {
-          Authorization: `Bearer ${process.env.EXPO_PUBLIC_API_ACCESS_TOKEN}`,
-          Accept: "application/json",
-        },
-      })
-      .then((res) => {
-        setResult(res.data);
+  const fetchData = async () => {
+    try {
+      const response = await getMovieCategory();
+      if (!response.error) {
+        setResult(response.data);
         setIsDataLoaded(true);
-      })
-      .catch((err) => console.log(err));
+        console.log(response.data);
+      } else {
+        console.error(response.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
