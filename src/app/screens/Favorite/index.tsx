@@ -1,9 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect, useNavigation, StackActions } from '@react-navigation/native'; // Menggunakan @react-navigation/native untuk navigasi
-import MovieItem from '@/app/components/movies/MovieItem';
-import { Movie } from '@/app/types/app';
+import MovieItem from "@/app/components/movies/MovieItem";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  StackActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native"; // Menggunakan @react-navigation/native untuk navigasi
+import React, { useCallback, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Movie } from "services/data-types";
 
 const FavoriteScreen = (): JSX.Element => {
   const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([]);
@@ -12,12 +22,14 @@ const FavoriteScreen = (): JSX.Element => {
   // Fungsi untuk mengambil film favorit dari AsyncStorage
   const fetchFavoriteMovies = async (): Promise<void> => {
     try {
-      const storedFavorites: string | null = await AsyncStorage.getItem('@FavoriteList');
+      const storedFavorites: string | null = await AsyncStorage.getItem(
+        "@FavoriteList"
+      );
       if (storedFavorites) {
         setFavoriteMovies(JSON.parse(storedFavorites));
       }
     } catch (error) {
-      console.log('Error Fetching favorite', error);
+      console.log("Error Fetching favorite", error);
     }
   };
 
@@ -32,7 +44,9 @@ const FavoriteScreen = (): JSX.Element => {
   if (favoriteMovies.length === 0) {
     return (
       <View style={styles.containerEmpty}>
-        <Text style={styles.textEmpty}>Tidak Ada Movie Favorit yang ditemukan</Text>
+        <Text style={styles.textEmpty}>
+          Tidak Ada Movie Favorit yang ditemukan
+        </Text>
       </View>
     );
   }
@@ -47,8 +61,10 @@ const FavoriteScreen = (): JSX.Element => {
           <TouchableOpacity
             style={styles.itemMovie}
             onPress={() => {
-              console.log('Navigating to MovieDetail with ID:', item.id);
-              navigation.dispatch(StackActions.push('MovieDetail', { id: item.id }));
+              console.log("Navigating to MovieDetail with ID:", item.id);
+              navigation.dispatch(
+                StackActions.push("MovieDetail", { id: item.id })
+              );
             }}
           >
             <MovieItem
@@ -72,11 +88,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
   },
   itemMovie: {
@@ -85,8 +101,8 @@ const styles = StyleSheet.create({
   },
   containerEmpty: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   textEmpty: {
     fontSize: 20,

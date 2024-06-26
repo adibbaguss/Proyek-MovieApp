@@ -1,31 +1,33 @@
-import React from 'react'
-import { ImageBackground, Text, StyleSheet, View, TouchableOpacity } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
-import type { MovieItemProps } from '../../types/app'
-import { useNavigation, StackActions } from '@react-navigation/native'
+import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import React from "react";
+import { MovieItemProps } from "services/data-types";
+import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesome } from "@expo/vector-icons";
+import { StackActions, useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-const MovieItem = ({ movie, size, coverType }: MovieItemProps): JSX.Element => {
-  const navigation = useNavigation()
-  const pushAction = StackActions.push('MovieDetail', { id: movie.id })
+const MovieItem = ({ movie, size, coverType }: MovieItemProps) => {
+  const navigation = useNavigation();
+  const pushAction = StackActions.push("MovieDetail", {
+    id: movie.id,
+  });
   return (
     <TouchableOpacity
-      style={{ padding: 4 }}
       onPress={() => {
-        navigation.dispatch(pushAction)
+        navigation.dispatch(pushAction);
       }}
     >
       <ImageBackground
         resizeMode="cover"
         style={[size, styles.backgroundImage]}
-        imageStyle={styles.backgroundImageStyle}
         source={{
-          uri: `https://image.tmdb.org/t/p/w500${coverType === 'backdrop' ? movie.backdrop_path : movie.poster_path
-            }`,
+          uri: `https://image.tmdb.org/t/p/w500${
+            coverType === "backdrop" ? movie.backdrop_path : movie.poster_path
+          }`,
         }}
       >
         <LinearGradient
-          colors={['#00000000', 'rgba(0, 0, 0, 0.7)']}
+          colors={["#00000000", "rgba(0, 0, 0, 0.7)"]}
           locations={[0.6, 0.8]}
           style={styles.gradientStyle}
         >
@@ -37,9 +39,8 @@ const MovieItem = ({ movie, size, coverType }: MovieItemProps): JSX.Element => {
         </LinearGradient>
       </ImageBackground>
     </TouchableOpacity>
-  )
-}
-
+  );
+};
 const styles = StyleSheet.create({
   backgroundImage: {
     marginRight: 4,
@@ -48,25 +49,25 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   movieTitle: {
-    color: 'white',
+    color: "white",
   },
   gradientStyle: {
     padding: 8,
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
     borderRadius: 8,
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: "flex",
+    justifyContent: "flex-end",
   },
   ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 2,
   },
   rating: {
-    color: 'yellow',
-    fontWeight: '700',
+    color: "yellow",
+    fontWeight: "700",
   },
-})
+});
 
-export default MovieItem
+export default MovieItem;
