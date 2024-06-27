@@ -38,29 +38,3 @@ export async function getMovieDetail(id: string) {
     responseData: axiosResponse,
   };
 }
-
-export async function getGenreList() {
-  const url = `genre/movie/list`;
-  const response = await axios.get(`${ROOT_BASEURL}/${url}`, {
-    headers: {
-      Authorization: `Bearer ${ROOT_TOKEN}`,
-    },
-  });
-  const axiosResponse = response.data.genres;
-  return {
-    responseData: axiosResponse,
-  };
-}
-
-export async function getMovieByGenre(selectedGenre: number) {
-  const url = `discover/movie?with_genres=${selectedGenre}`;
-  const response = await axios.get(`${ROOT_BASEURL}/${url}`, {
-    headers: {
-      Authorization: `Bearer ${ROOT_TOKEN}`,
-    },
-  });
-  const axiosResponse = response.data.results;
-  return {
-    responseData: axiosResponse,
-  };
-}
