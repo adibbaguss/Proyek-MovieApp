@@ -28,13 +28,16 @@ const CategorySearch = (): JSX.Element => {
   const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGenresLoading, setIsGenresLoading] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
     // Fetch genres from TMDB
     const fetchGenres = async () => {
+      setIsGenresLoading(true);
       const genresResponse = await getGenreList();
       setGenres(genresResponse.responseData);
+      setIsGenresLoading(false);
     };
     fetchGenres();
     console.log("fetchGenres", genres);
@@ -46,8 +49,8 @@ const CategorySearch = (): JSX.Element => {
       const fetchMovies = async () => {
         setIsLoading(true);
         const moviesResponse = await getMovieByGenre(selectedGenre);
-        setIsLoading(false);
         setMovies(moviesResponse.responseData);
+        setIsLoading(false);
       };
       fetchMovies();
     }
@@ -55,22 +58,26 @@ const CategorySearch = (): JSX.Element => {
 
   return (
     <View>
-      <ScrollView style={{ marginTop: 10 }} horizontal>
-        {genres.map((genre) => (
-          <TouchableOpacity
-            key={genre.id}
-            onPress={() => setSelectedGenre(genre.id)}
-            style={{
-              backgroundColor: selectedGenre === genre.id ? "#8978A4" : "#C0B4D5",
-              padding: 10,
-              margin: 5,
-              borderRadius: 5,
-            }}
-          >
-            <Text style={{ color: 'white' }}>{genre.name}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      {isGenresLoading ? (
+        <ActivityIndicator size="large" style={{ marginTop: 10 }} />
+      ) : (
+        <ScrollView style={{ marginTop: 10 }} horizontal>
+          {genres.map((genre) => (
+            <TouchableOpacity
+              key={genre.id}
+              onPress={() => setSelectedGenre(genre.id)}
+              style={{
+                backgroundColor: selectedGenre === genre.id ? "#8978A4" : "#C0B4D5",
+                padding: 10,
+                margin: 5,
+                borderRadius: 5,
+              }}
+            >
+              <Text style={{ color: 'white' }}>{genre.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
       {isLoading ? (
         <ActivityIndicator size="large" />
       ) : (

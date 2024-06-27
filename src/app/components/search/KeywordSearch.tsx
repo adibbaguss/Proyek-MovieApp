@@ -24,8 +24,8 @@ const KeywordSearch = () => {
     setIsLoading(true);
     const url = `search/movie?query=${keyword}`;
     const moviesResponse = await getMovieList(url);
-    setIsLoading(false);
     setMovies(moviesResponse.data.results);
+    setIsLoading(false);
     console.log("fetchMovies Search : ", movies);
   };
 
