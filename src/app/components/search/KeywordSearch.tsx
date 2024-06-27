@@ -82,20 +82,18 @@ const KeywordSearch = () => {
       {isLoading ? (
         <ActivityIndicator size="large" />
       ) : movies.length > 0 ? (
-        <SafeAreaView style={styles.container}>
-          <FlatList
-            data={movies}
-            numColumns={3}
-            renderItem={({ item }) => (
-              <MovieItem
-                movie={item}
-                size={{ width: 100, height: 160 }}
-                coverType="poster"
-              />
-            )}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        </SafeAreaView>
+        <FlatList
+          data={movies}
+          numColumns={3}
+          renderItem={({ item }) => (
+            <MovieItem
+              movie={item}
+              size={{ width: 100, height: 160 }}
+              coverType="poster"
+            />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        />
       ) : (
         <Text style={{ textAlign: "center", marginTop: 20 }}>
           No movies found.
