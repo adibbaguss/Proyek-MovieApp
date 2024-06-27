@@ -11,9 +11,9 @@ import {
   View,
 } from "react-native";
 
+import { API_ACCESS_TOKEN } from "@env";
 import { Movie } from "services/data-types";
 import MovieItem from "../movies/MovieItem";
-import { getMovieList } from "services/movie";
 
 const KeywordSearch = () => {
   const [keyword, setKeyword] = useState("");
@@ -22,16 +22,25 @@ const KeywordSearch = () => {
 
   const fetchMovies = async () => {
     setIsLoading(true);
-    const url = `search/movie?query=${keyword}`;
-    const moviesResponse = await getMovieList(url);
+    const apiUrl = `https://api.themoviedb.org/3/search/movie?query=${keyword}`;
+
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${API_ACCESS_TOKEN}`,
+      },
+    };
+
+    const response = await fetch(apiUrl, options);
+    const data = await response.json();
+    setMovies(data.results);
     setIsLoading(false);
-    setMovies(moviesResponse.data.results);
-    console.log("fetchMovies Search : ", movies);
   };
 
   return (
     <View>
-      <View style={{ flexDirection: "row", marginTop: 15, marginBottom: 10, alignItems: "center" }}>
+      <View style={{ flexDirection: "row", padding: 10, alignItems: "center" }}>
         <TextInput
           placeholder="Search movies..."
           value={keyword}
@@ -39,19 +48,10 @@ const KeywordSearch = () => {
           style={{
             flex: 1,
             height: 40,
-            borderColor: "#007AFF", 
+            borderColor: "gray",
             borderWidth: 1,
             paddingLeft: 10,
-            borderRadius: 20, 
-            backgroundColor: "#FFF", 
-            shadowColor: "#000", 
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5, 
+            borderRadius: 5,
           }}
         />
         {isLoading ? (
@@ -61,21 +61,14 @@ const KeywordSearch = () => {
             onPress={fetchMovies}
             style={{
               marginLeft: 10,
-              backgroundColor: "#007AFF", 
+              borderStyle: "solid",
               padding: 10,
-              borderWidth: 0, 
-              borderRadius: 20, 
-              shadowColor: "#000", 
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5, 
+              borderWidth: 1,
+              borderColor: "#007AFF",
+              borderRadius: 5,
             }}
           >
-            <Text style={{ color: "#FFF" }}>Search</Text>
+            <Text style={{ color: "#007AFF" }}>Search</Text>
           </TouchableOpacity>
         )}
       </View>

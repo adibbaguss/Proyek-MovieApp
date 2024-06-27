@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { API_ACCESS_TOKEN } from "@env";
 import MovieItem from "../movies/MovieItem";
 import { FlatList } from "react-native-gesture-handler";
 import { Movie, MovieGenre } from "services/data-types";
-import { getGenreList, getMovieByGenre } from "services/movie";
 
 const coverImageSize = {
   backdrop: {
@@ -32,22 +32,51 @@ const CategorySearch = (): JSX.Element => {
 
   useEffect(() => {
     // Fetch genres from TMDB
-    const fetchGenres = async () => {
-      const genresResponse = await getGenreList();
-      setGenres(genresResponse.responseData);
+    const fetchGenres = () => {
+      const url = "https://api.themoviedb.org/3/genre/movie/list";
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${API_ACCESS_TOKEN}`,
+        },
+      };
+
+      fetch(url, options)
+        .then((response) => response.json())
+        .then((response) => {
+          setGenres(response.genres);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
     fetchGenres();
-    console.log("fetchGenres", genres);
   }, []);
 
   useEffect(() => {
     // Fetch movies by selected genre from TMDB
     if (selectedGenre) {
-      const fetchMovies = async () => {
+      const fetchMovies = () => {
         setIsLoading(true);
-        const moviesResponse = await getMovieByGenre(selectedGenre);
-        setIsLoading(false);
-        setMovies(moviesResponse.responseData);
+        const url = `https://api.themoviedb.org/3/discover/movie?with_genres=${selectedGenre}`;
+        const options = {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${API_ACCESS_TOKEN}`,
+          },
+        };
+
+        fetch(url, options)
+          .then((response) => response.json())
+          .then((response) => {
+            setIsLoading(false);
+            setMovies(response.results);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       };
       fetchMovies();
     }
@@ -61,13 +90,13 @@ const CategorySearch = (): JSX.Element => {
             key={genre.id}
             onPress={() => setSelectedGenre(genre.id)}
             style={{
-              backgroundColor: selectedGenre === genre.id ? "#8978A4" : "#C0B4D5",
+              backgroundColor: selectedGenre === genre.id ? "blue" : "grey",
               padding: 10,
               margin: 5,
               borderRadius: 5,
             }}
           >
-            <Text style={{ color: 'white' }}>{genre.name}</Text>
+            <Text>{genre.name}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
