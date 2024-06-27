@@ -1,10 +1,15 @@
-import MovieList from '@/app/components/movies/MovieList';
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useState } from 'react';
-import { ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Movie } from 'services/data-types';
-import { getMovieDetail } from 'services/movie';
-import FavoriteButton from '@/app/components/favorite/favoriteButton';
+import MovieList from "@/app/components/movies/MovieList";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useState } from "react";
+import {
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { Movie } from "services/data-types";
+import { getMovieDetail } from "services/movie";
 
 type PropsDetail = {
   route: any;
@@ -23,9 +28,9 @@ const MovieDetail = ({ route }: PropsDetail) => {
     fetchMovieDetail();
   }, [id]);
 
-  console.log('====================================');
-  console.log('Detail Movie : ', movie);
-  console.log('====================================');
+  console.log("====================================");
+  console.log("Detail Movie : ", movie);
+  console.log("====================================");
 
   return (
     <View>
@@ -37,13 +42,20 @@ const MovieDetail = ({ route }: PropsDetail) => {
             source={{
               uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
             }}
-            onLayout={(event) => setImageHeight(event.nativeEvent.layout.height)}
+            onLayout={(event) =>
+              setImageHeight(event.nativeEvent.layout.height)
+            }
           >
-            <LinearGradient colors={['#00000000', 'rgba(0, 0, 0, 0.7)']} locations={[0.6, 0.8]} style={[styles.gradientStyle, { height: imageHeight }]}>
+            <LinearGradient
+              colors={["#00000000", "rgba(0, 0, 0, 0.7)"]}
+              locations={[0.6, 0.8]}
+              style={[styles.gradientStyle, { height: imageHeight }]}
+            >
               <Text style={styles.movieTitle}>{movie.title}</Text>
-              <View style={styles.ratingFavoriteContainer}>
-                <Text style={styles.rating}>{movie.vote_average.toFixed(1)}</Text>
-                <FavoriteButton movie={movie} />
+              <View style={styles.ratingContainer}>
+                <Text style={styles.rating}>
+                  {movie.vote_average.toFixed(1)}
+                </Text>
               </View>
             </LinearGradient>
           </ImageBackground>
@@ -72,7 +84,11 @@ const MovieDetail = ({ route }: PropsDetail) => {
           </View>
           <ScrollView>
             <View style={styles.list}>
-              <MovieList title="Recommendations" path={`/movie/${movie.id}/recommendations`} coverType="poster" />
+              <MovieList
+                title="Recommendations"
+                path={`/movie/${movie.id}/recommendations`}
+                coverType="poster"
+              />
             </View>
           </ScrollView>
         </>
@@ -80,59 +96,58 @@ const MovieDetail = ({ route }: PropsDetail) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   detailContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: 10,
-    color: 'white',
+    color: "white",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   overview: {
     flex: 1,
   },
   gradientStyle: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start',
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
     padding: 10,
   },
   movieTitle: {
     fontSize: 24,
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
-  ratingFavoriteContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
+  ratingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   rating: {
-    color: 'yellow',
+    marginLeft: 4,
+    color: "yellow",
   },
   backdropImage: {
-    width: 'auto',
+    width: "auto",
   },
   content: {
     padding: 20,
   },
   mainContent: {
-    flexDirection: 'row',
+    flexDirection: "row",
     margin: 10,
     gap: 50,
   },
   textTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   list: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     padding: 10,
   },
 });
-
 export default MovieDetail;
