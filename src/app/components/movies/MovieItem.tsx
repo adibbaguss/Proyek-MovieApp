@@ -13,6 +13,10 @@ const MovieItem = ({ movie, size, coverType }: MovieItemProps) => {
   });
   return (
     <TouchableOpacity
+      style={{
+        padding: 4,
+        borderRadius: 8,
+      }}
       onPress={() => {
         navigation.dispatch(pushAction);
       }}
@@ -38,6 +42,7 @@ const MovieItem = ({ movie, size, coverType }: MovieItemProps) => {
 const styles = StyleSheet.create({
   backgroundImage: {
     marginRight: 4,
+    borderRadius: 8,
   },
   backgroundImageStyle: {
     borderRadius: 8,
