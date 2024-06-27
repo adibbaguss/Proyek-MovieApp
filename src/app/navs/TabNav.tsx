@@ -1,6 +1,5 @@
 import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import SearchScreen from "../screens/Search";
 import FavoriteScreen from "../screens/Favorite";
 import HomeStackNav from "./HomeStackNav";
 import SearchStackNav from "./SearchStackNav";
