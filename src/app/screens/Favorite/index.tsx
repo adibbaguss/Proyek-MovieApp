@@ -1,85 +1,60 @@
-import MovieItem from "@/app/components/movies/MovieItem";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  StackActions,
-  useFocusEffect,
-  useNavigation,
-} from "@react-navigation/native"; // Menggunakan @react-navigation/native untuk navigasi
-import React, { useCallback, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Movie } from "services/data-types";
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import MovieItem from '@/app/components/movies/MovieItem';
+import { Movie } from 'services/data-types';
 
 const FavoriteScreen = (): JSX.Element => {
   const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([]);
-  const navigation = useNavigation();
 
-  // Fungsi untuk mengambil film favorit dari AsyncStorage
   const fetchFavoriteMovies = async (): Promise<void> => {
     try {
-      const storedFavorites: string | null = await AsyncStorage.getItem(
-        "@FavoriteList"
-      );
+      const storedFavorites: string | null = await AsyncStorage.getItem('@FavoriteList');
       if (storedFavorites) {
         setFavoriteMovies(JSON.parse(storedFavorites));
       }
     } catch (error) {
-      console.log("Error Fetching favorite", error);
+      console.log('Error Fetching favorite', error);
     }
   };
 
-  // Menggunakan useFocusEffect untuk memanggil fetchFavoriteMovies ketika layar fokus
   useFocusEffect(
     useCallback(() => {
       fetchFavoriteMovies();
     }, [])
   );
 
-  // Jika tidak ada film favorit, tampilkan pesan
+  useEffect(() => {
+    fetchFavoriteMovies();
+  }, []);
+
   if (favoriteMovies.length === 0) {
     return (
       <View style={styles.containerEmpty}>
-        <Text style={styles.textEmpty}>
-          Tidak Ada Movie Favorit yang ditemukan
-        </Text>
+        <Text style={styles.textEmpty}>Tidak Ada Movie Favorit yang ditemukan</Text>
       </View>
     );
   }
 
-  // Render item pada FlatList untuk menampilkan daftar film favorit
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Favorite Movies</Text>
-      <FlatList
-        data={favoriteMovies}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.itemMovie}
-            onPress={() => {
-              console.log("Navigating to MovieDetail with ID:", item.id);
-              navigation.dispatch(
-                StackActions.push("MovieDetail", { id: item.id })
-              );
-            }}
-          >
-            <MovieItem
-              movie={item}
-              size={{ width: 100, height: 160 }} // Adjust the width and height as per your design
-              coverType="poster"
-            />
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => `${item.id}`}
-        numColumns={3} // Menampilkan dalam 3 kolom
-        contentContainerStyle={styles.list}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <FlatList
+          data={favoriteMovies}
+          renderItem={({ item }) => (
+            <View style={styles.itemContainer}>
+              <MovieItem movie={item} size={{ width: 100, height: 160 }} coverType="poster" />
+            </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={3}
+          contentContainerStyle={styles.list}
+          columnWrapperStyle={styles.columnWrapper}
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 };
 
@@ -88,27 +63,25 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  itemMovie: {
-    flex: 1,
-    margin: 8,
+    backgroundColor: '#fff',
   },
   containerEmpty: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textEmpty: {
     fontSize: 20,
   },
   list: {
     paddingBottom: 16,
+  },
+  itemContainer: {
+    flex: 1,
+    margin: 4,
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
   },
 });
 
