@@ -28,7 +28,7 @@ const MovieDetail = ({ route }: PropsDetail) => {
   console.log('====================================');
 
   return (
-    <View>
+    <ScrollView>
       {movie && (
         <>
           <ImageBackground
@@ -77,7 +77,7 @@ const MovieDetail = ({ route }: PropsDetail) => {
           </ScrollView>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({

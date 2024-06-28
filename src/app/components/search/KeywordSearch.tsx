@@ -39,7 +39,7 @@ const KeywordSearch = () => {
           style={{
             flex: 1,
             height: 40,
-            borderColor: "#007AFF", 
+            borderColor: "#8978A4", 
             borderWidth: 1,
             paddingLeft: 10,
             borderRadius: 20, 
@@ -61,7 +61,7 @@ const KeywordSearch = () => {
             onPress={fetchMovies}
             style={{
               marginLeft: 10,
-              backgroundColor: "#007AFF", 
+              backgroundColor: "#8978A4", 
               padding: 10,
               borderWidth: 0, 
               borderRadius: 20, 
