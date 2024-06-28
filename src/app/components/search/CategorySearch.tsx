@@ -59,7 +59,7 @@ const CategorySearch = (): JSX.Element => {
   return (
     <View>
       {isGenresLoading ? (
-        <ActivityIndicator size="large" style={{ marginTop: 10 }} />
+        <ActivityIndicator size="large" style={{ marginTop: 15 }} />
       ) : (
         <ScrollView style={{ marginTop: 10 }} horizontal>
           {genres.map((genre) => (
@@ -82,6 +82,7 @@ const CategorySearch = (): JSX.Element => {
         <ActivityIndicator size="large" />
       ) : (
         <FlatList
+          style={{ marginTop: 10 }}
           data={movies}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
